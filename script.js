@@ -1,6 +1,22 @@
+let scale = 1;
+
 function handleNo() {
-    document.getElementById('screen-intro').classList.add('hidden');
-    document.getElementById('screen-reject').classList.remove('hidden');
+    const yesBtn = document.querySelector('.btn-yes');
+
+    // Tăng kích thước
+    scale += 0.3;
+    yesBtn.style.transform = `scale(${scale})`;
+
+    // Random vị trí trên màn hình
+    const maxX = window.innerWidth - yesBtn.offsetWidth;
+    const maxY = window.innerHeight - yesBtn.offsetHeight;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    yesBtn.style.position = "fixed";
+    yesBtn.style.left = randomX + "px";
+    yesBtn.style.top = randomY + "px";
 }
 
 function handleYes() {
