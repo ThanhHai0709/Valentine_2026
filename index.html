@@ -1,187 +1,77 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bí Mật</title>
+let scale = 1;
+
+function handleNo() {
+    const yesBtn = document.querySelector('.btn-yes');
+
+    // Tăng kích thước
+    scale += 0.3;
+    yesBtn.style.transform = `scale(${scale})`;
+
+    // Random vị trí trên màn hình
+    const maxX = window.innerWidth - yesBtn.offsetWidth;
+    const maxY = window.innerHeight - yesBtn.offsetHeight;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    yesBtn.style.position = "fixed";
+    yesBtn.style.left = randomX + "px";
+    yesBtn.style.top = randomY + "px";
+}
+
+function handleYes() {
+    // 1. Ẩn intro
+    document.getElementById('screen-intro').classList.add('hidden');
     
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="img/flowers.png">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    // 2. Hiện hoa
+    const flowerWorld = document.getElementById('flower-world');
+    document.body.classList.add('show-flower');
+    flowerWorld.style.opacity = '1';
 
-    <div id="screen-intro" class="screen-center">
-        <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExam50YWQwNXc4cmN4cXlzbmVoc2M4OGMzM3k2djhpbnpnYmc0NWtmNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vFKqnCdLPNOKc/giphy.gif" class="cat-img" alt="Cute Cat">
-        <h1>Bạn có phải bé Linh honggg???</h1>
-        <div class="btn-group">
-            <button class="btn-yes" onclick="handleYes()">Có</button>
-            <button class="btn-no" onclick="handleNo()">Không</button>
-        </div>
-    </div>
+    // 3. Animation hoa chạy (sau 0.5s)
+    setTimeout(() => {
+        flowerWorld.classList.remove('paused');
+    }, 500);
 
-    <div id="screen-reject" class="screen-center hidden">
-        <p class="reject-text">Vậy thì mời bạn ra chuồng gà chơi,<br>chỗ này không dành cho bạn nhé!!! 🐔</p>
-    </div>
+    // 4. Mưa tim
+    startHeartRain();
 
-    <div id="flower-world" class="paused">
-        <div class="night"></div>
+    // 5. Hiện thư (sau 4s)
+    setTimeout(() => {
+        document.getElementById('myLetter').classList.add('show');
+    }, 4000);
+
+    // --- PHẦN MỚI THÊM: PHÁT NHẠC ---
+    const audio = document.getElementById("bgMusic");
+    
+    // Chỉnh âm lượng (0.0 đến 1.0) - Đặt 50% cho đỡ chói tai
+    audio.volume = 0.5; 
+    
+    // Lệnh phát nhạc
+    audio.play().catch(function(error) {
+        console.log("Trình duyệt chặn phát nhạc tự động: ", error);
+        // Một số trình duyệt trên điện thoại có thể chặn nếu tương tác chưa đủ
+    });
+}
+
+function closeLetter() {
+    const letter = document.getElementById('myLetter');
+    letter.style.opacity = '0';
+    letter.style.transform = 'translate(-50%, -50%) scale(0.5)';
+}
+
+function startHeartRain() {
+    setInterval(() => {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '❤';
+        heart.style.left = Math.random() * 100 + 'vw';
+        const size = Math.random() * 20 + 10 + 'px';
+        heart.style.fontSize = size;
+        const duration = Math.random() * 3 + 3 + 's';
+        heart.style.animationDuration = duration;
+        document.body.appendChild(heart);
         
-        <div class="letter-card" id="myLetter">
-            <div class="letter-content">
-                Gửi tới bé Linh 💌
-                
-                Chúc em sinh nhật vui vẻ 
-
-                💖💓🎂 Happy Birthday 🎂💓💖
-            </div>
-            <button class="btn-read" onclick="closeLetter()">Em đã đọc thư anh gửi rồi ạ 💕</button>
-        </div>
-
-        <div class="flowers">
-            <div class="flower flower--1">
-                <div class="flower__leafs flower__leafs--1">
-                    <div class="flower__leaf flower__leaf--1"></div>
-                    <div class="flower__leaf flower__leaf--2"></div>
-                    <div class="flower__leaf flower__leaf--3"></div>
-                    <div class="flower__leaf flower__leaf--4"></div>
-                    <div class="flower__white-circle"></div>
-                    <div class="flower__light flower__light--1"></div>
-                    <div class="flower__light flower__light--2"></div>
-                    <div class="flower__light flower__light--3"></div>
-                    <div class="flower__light flower__light--4"></div>
-                    <div class="flower__light flower__light--5"></div>
-                    <div class="flower__light flower__light--6"></div>
-                    <div class="flower__light flower__light--7"></div>
-                    <div class="flower__light flower__light--8"></div>
-                </div>
-                <div class="flower__line">
-                    <div class="flower__line__leaf flower__line__leaf--1"></div>
-                    <div class="flower__line__leaf flower__line__leaf--2"></div>
-                    <div class="flower__line__leaf flower__line__leaf--3"></div>
-                    <div class="flower__line__leaf flower__line__leaf--4"></div>
-                    <div class="flower__line__leaf flower__line__leaf--5"></div>
-                    <div class="flower__line__leaf flower__line__leaf--6"></div>
-                </div>
-            </div>
-
-            <div class="flower flower--2">
-                <div class="flower__leafs flower__leafs--2">
-                    <div class="flower__leaf flower__leaf--1"></div>
-                    <div class="flower__leaf flower__leaf--2"></div>
-                    <div class="flower__leaf flower__leaf--3"></div>
-                    <div class="flower__leaf flower__leaf--4"></div>
-                    <div class="flower__white-circle"></div>
-                    <div class="flower__light flower__light--1"></div>
-                    <div class="flower__light flower__light--2"></div>
-                    <div class="flower__light flower__light--3"></div>
-                    <div class="flower__light flower__light--4"></div>
-                    <div class="flower__light flower__light--5"></div>
-                    <div class="flower__light flower__light--6"></div>
-                    <div class="flower__light flower__light--7"></div>
-                    <div class="flower__light flower__light--8"></div>
-                </div>
-                <div class="flower__line">
-                    <div class="flower__line__leaf flower__line__leaf--1"></div>
-                    <div class="flower__line__leaf flower__line__leaf--2"></div>
-                    <div class="flower__line__leaf flower__line__leaf--3"></div>
-                    <div class="flower__line__leaf flower__line__leaf--4"></div>
-                </div>
-            </div>
-
-            <div class="flower flower--3">
-                <div class="flower__leafs flower__leafs--3">
-                    <div class="flower__leaf flower__leaf--1"></div>
-                    <div class="flower__leaf flower__leaf--2"></div>
-                    <div class="flower__leaf flower__leaf--3"></div>
-                    <div class="flower__leaf flower__leaf--4"></div>
-                    <div class="flower__white-circle"></div>
-                    <div class="flower__light flower__light--1"></div>
-                    <div class="flower__light flower__light--2"></div>
-                    <div class="flower__light flower__light--3"></div>
-                    <div class="flower__light flower__light--4"></div>
-                    <div class="flower__light flower__light--5"></div>
-                    <div class="flower__light flower__light--6"></div>
-                    <div class="flower__light flower__light--7"></div>
-                    <div class="flower__light flower__light--8"></div>
-                </div>
-                <div class="flower__line">
-                    <div class="flower__line__leaf flower__line__leaf--1"></div>
-                    <div class="flower__line__leaf flower__line__leaf--2"></div>
-                    <div class="flower__line__leaf flower__line__leaf--3"></div>
-                    <div class="flower__line__leaf flower__line__leaf--4"></div>
-                </div>
-            </div>
-
-            <div class="grow-ans" style="--d:1.2s">
-                <div class="flower__g-long">
-                    <div class="flower__g-long__top"></div>
-                    <div class="flower__g-long__bottom"></div>
-                </div>
-            </div>
-
-            <div class="grow-ans" style="--d:2.4s">
-                <div class="flower__g-right flower__g-right--1">
-                    <div class="leaf"></div>
-                </div>
-            </div>
-
-            <div class="grow-ans" style="--d:2.8s">
-                <div class="flower__g-right flower__g-right--2">
-                    <div class="leaf"></div>
-                </div>
-            </div>
-
-            <div class="grow-ans" style="--d:2.8s">
-                <div class="flower__g-front">
-                    <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--1">
-                        <div class="flower__g-front__leaf"></div>
-                    </div>
-                    <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--2">
-                        <div class="flower__g-front__leaf"></div>
-                    </div>
-                    <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--3">
-                        <div class="flower__g-front__leaf"></div>
-                    </div>
-                    <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--4">
-                        <div class="flower__g-front__leaf"></div>
-                    </div>
-                    <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--5">
-                        <div class="flower__g-front__leaf"></div>
-                    </div>
-                    <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--6">
-                        <div class="flower__g-front__leaf"></div>
-                    </div>
-                    <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--7">
-                        <div class="flower__g-front__leaf"></div>
-                    </div>
-                    <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--8">
-                        <div class="flower__g-front__leaf"></div>
-                    </div>
-                    <div class="flower__g-front__line"></div>
-                </div>
-            </div>
-
-            <div class="grow-ans" style="--d:3.2s">
-                <div class="flower__g-fr">
-                    <div class="leaf"></div>
-                    <div class="flower__g-fr__leaf flower__g-fr__leaf--1"></div>
-                    <div class="flower__g-fr__leaf flower__g-fr__leaf--2"></div>
-                    <div class="flower__g-fr__leaf flower__g-fr__leaf--3"></div>
-                    <div class="flower__g-fr__leaf flower__g-fr__leaf--4"></div>
-                    <div class="flower__g-fr__leaf flower__g-fr__leaf--5"></div>
-                    <div class="flower__g-fr__leaf flower__g-fr__leaf--6"></div>
-                    <div class="flower__g-fr__leaf flower__g-fr__leaf--7"></div>
-                    <div class="flower__g-fr__leaf flower__g-fr__leaf--8"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <audio id="bgMusic" loop>
-        <source src="img/Phepmau.mp3" type="audio/mp3">
-        Trình duyệt của bạn không hỗ trợ phát nhạc.
-    </audio>
-    <script src="script.js"></script>
-</body>
-
-</html>
+        setTimeout(() => { heart.remove(); }, 6000);
+    }, 300);
+}
