@@ -35,7 +35,7 @@ button {
     cursor: pointer; font-weight: bold; font-family: 'Quicksand', sans-serif; transition: transform 0.2s;
 }
 
-.btn-yes { background-color: #ff6b81; color: white; box-shadow: 0 4px 15px rgba(255, 107, 129, 0.4); }
+.btn-yes { background-color: #ff6b81; color: white; box-shadow: 0 4px 15px rgba(255, 107, 129, 0.4); transition: transform 0.3s ease;}
 .btn-no { background-color: white; color: #555; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
 button:active { transform: scale(0.95); }
 
